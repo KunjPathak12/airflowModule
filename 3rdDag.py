@@ -12,7 +12,7 @@ def getter(ti):
     fname = ti.xcom_pull(task_ids="setter", key="fname")
     mname = ti.xcom_pull(task_ids="setter", key="mname")
     lname = ti.xcom_pull(task_ids="setter", key="lname")
-    print("HEllo i am {} {} {}this is a DAG with params.".format(fname,mname,lname))
+    print("Hello i am {} {} {}this is a DAG with params.".format(fname,mname,lname))
 
 
 defaults = {

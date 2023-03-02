@@ -3,7 +3,7 @@ from airflow.operators.python import *
 from datetime import *
 
 def printTaskWParam(fname,mname,lname):
-    print("HEllo i am {} {} {}this is a DAG with params.".format(fname,mname,lname))
+    print("Hello i am {} {} {}this is a DAG with params.".format(fname,mname,lname))
 
 
 def printTaskWOParam():
