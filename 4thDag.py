@@ -3,27 +3,22 @@ from airflow.operators.bash import *
 from datetime import *
 from airflow import *
 
-
-
 defaults = {
     "owner":"Kunj Pathak",
     "retries":5,
     "retry_delay": timedelta(minutes=5)
 }
 
-
 def setter(ti):
     ti.xcom_push(key="position", value="intern")
-    ti.xcom_push(key="task",value="Airflow Interview")
+    ti.xcom_push(key="task", value="Airflow Interview")
     ti.xcom_push(key="i_name", value="sr.DE")
 
 def getter(ti):
-    position = ti.xcom_pull(task_ids="setter",key="position")
-    task     = ti.xcom_pull(task_ids="setter",key="task")
-    i_name   = ti.xcom_pull(task_ids="setter",key="i_name")
-    print("Interview on the following topic of {}, for the position of {} will be taken by one of our {}".format(task,position,i_name))
-
-
+    position = ti.xcom_pull(task_ids="pushVal", key="position")
+    task     = ti.xcom_pull(task_ids="pushVal", key="task")
+    i_name   = ti.xcom_pull(task_ids="pushVal", key="i_name")
+    print(f"Interview on the following topic of {task}, for the position of {position} will be taken by one of our {i_name}")
 
 with DAG(dag_id="4thDag",\
          start_date= datetime(2023,3,2),\
@@ -34,11 +29,8 @@ with DAG(dag_id="4thDag",\
          description="dag created using xcom  also scheduled with cron syntax\
          for getting and setting return value"
          ) as dag:
-    task0 = PythonOperator(task_id="pushVal",\
-                           python_callable=setter)
-    task1 = PythonOperator(task_id="getVal",\
-                           python_callable=getter)
-    task2 = BashOperator(task_id="echoContent",\
-                         bash_command="echo successfully value pushed and fetched")
+    task0 = PythonOperator(task_id="pushVal", python_callable=setter)
+    task1 = PythonOperator(task_id="getVal", python_callable=getter)
+    task2 = BashOperator(task_id="echoContent", bash_command="echo successfully value pushed and fetched")
 
-task0 >> [task1,task2]
+task0 >> [task1, task2]
